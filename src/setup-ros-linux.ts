@@ -126,11 +126,14 @@ export async function runLinux() {
 		"-c",
 		`curl -s http://lcas.lincoln.ac.uk/repos/public.key | sudo apt-key add -`,
 	]);
-	await utils.exec("sudo", [
-		"bash",
-		"-c",
-		`echo "deb http://lcas.lincoln.ac.uk/ubuntu/main $(lsb_release -sc) main" > /etc/apt/sources.list.d/lcas-latest.list`,
-	]);
+	// only add L-CAS for bionic at the moment, as we don't support others yet.
+	if (distribCodename === "bionic") {
+		await utils.exec("sudo", [
+			"bash",
+			"-c",
+			`echo "deb http://lcas.lincoln.ac.uk/ubuntu/main $(lsb_release -sc) main" > /etc/apt/sources.list.d/lcas-latest.list`,
+		]);
+	}
 	await utils.exec("sudo", ["apt-get", "update"]);
 	await utils.exec("sudo", ["apt-get", "upgrade", "-y"]);
 
