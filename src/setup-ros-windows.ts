@@ -7,13 +7,11 @@ import * as pip from "./package_manager/pip";
 import * as utils from "./utils";
 
 const binaryReleases: { [index: string]: string } = {
-	dashing:
-		"https://github.com/ros2/ros2/releases/download/release-dashing-20210610/ros2-dashing-20210610-windows-amd64.zip",
-	eloquent:
-		"https://github.com/ros2/ros2/releases/download/release-eloquent-20200124/ros2-eloquent-20200124-windows-release-amd64.zip",
 	foxy: "https://github.com/ros2/ros2/releases/download/release-foxy-20210902/ros2-foxy-20210902-windows-release-amd64.zip",
 	galactic:
 		"https://github.com/ros2/ros2/releases/download/release-galactic-20210716/ros2-galactic-20210616-windows-release-amd64.zip",
+	humble:
+		"https://github.com/ros2/ros2/releases/download/release-humble-20220523/ros2-humble-20220523-windows-release-amd64.zip",
 };
 
 const pip3Packages: string[] = ["lxml", "netifaces"];
@@ -46,6 +44,14 @@ async function prepareRos2BuildEnvironment() {
 	core.addPath("c:\\program files\\cppcheck");
 	await chocolatey.installChocoDependencies();
 	await chocolatey.downloadAndInstallRos2NugetPackages();
+
+	// Avoid version of pip that breaks Windows GitHub actions. See:
+	// * https://github.com/ros-tooling/action-ros-ci/pull/719#issuecomment-1030318146
+	// * https://github.com/actions/virtual-environments/issues/5027#issuecomment-1031113617
+	await utils.exec("python", ["-m", "pip", "install", "-U", "pip!=22.0.*"], {
+		cwd: path.sep,
+	});
+
 	await pip.installPython3Dependencies(false);
 	await pip.runPython3PipInstall(pip3Packages, false);
 	await pip.runPython3PipInstall(["rosdep", "vcstool"], false);

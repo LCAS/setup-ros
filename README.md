@@ -79,7 +79,7 @@ See [action.yml](action.yml).
 
 `setup-ros` is under active development, and compatibility between releases is not yet guaranteed.
 Please do not use `ros-tooling/setup-ros@master`.
-Instead, pin your workflows to a particular release, e.g.: `ros-tooling/setup-ros@v0.2`.
+Instead, pin your workflows to a particular release, e.g.: `ros-tooling/setup-ros@v0.4`.
 
 ### Setting up the worker, and installing the system dependencies
 
@@ -89,7 +89,7 @@ This setup should be used when ROS is built entirely from source.
 
 ```yaml
 steps:
-  - uses: ros-tooling/setup-ros@v0.2
+  - uses: ros-tooling/setup-ros@v0.4
   - run: vcs --help
 ```
 
@@ -108,16 +108,16 @@ jobs:
         os: [macOS-latest, windows-latest]
     steps:
       - name: Setup ROS
-        uses: ros-tooling/setup-ros@v0.2
+        uses: ros-tooling/setup-ros@v0.4
       - run: vcs --help
 
   build_docker:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:focal
+      image: ubuntu:jammy
     steps:
       - name: Setup ROS
-        uses: ros-tooling/setup-ros@v0.2
+        uses: ros-tooling/setup-ros@v0.4
       - run: vcs --help
 ```
 
@@ -130,14 +130,16 @@ This setup is necessary to use the ROS 1/ROS 2 bridge: [ros1_bridge](https://git
 build_docker:
   runs-on: ubuntu-latest
   container:
-    image: ubuntu:focal
+    image: ubuntu:jammy
   steps:
-    - uses: ros-tooling/setup-ros@v0.2
+    - uses: ros-tooling/setup-ros@v0.4
       with:
-        required-ros-distributions: noetic galactic
-    - run: "source /opt/ros/galactic/setup.bash && ros2 run --help"
+        required-ros-distributions: noetic humble
+    - run: "source /opt/ros/humble/setup.bash && ros2 run --help"
     - run: "source /opt/ros/noetic/setup.bash && rosnode --help"
 ```
+
+**Note: on Ubuntu, `required-ros-distributions` installs the desktop variant for that distribution. This option is not required, and should probably be avoided in most workflows. It is retained for historical reasons and those who specifically do not care about whether their application specifies its dependencies properly.**
 
 ### Use pre-release ROS 2 binaries for testing
 
@@ -147,12 +149,12 @@ You can specify if you'd like to use the [pre-release ROS 2 repository][pre_rele
 build_docker:
   runs-on: ubuntu-latest
   container:
-    image: ubuntu:focal
+    image: ubuntu:jammy
   steps:
-    - uses: ros-tooling/setup-ros@v0.2
+    - uses: ros-tooling/setup-ros@v0.4
       with:
         use-ros2-testing: true
-        required-ros-distributions: galactic
+        required-ros-distributions: humble
 ```
 
 ### Including RTI Connext
@@ -165,13 +167,13 @@ To include RTI Connext, simply set the `install-connext` parameter to `true`.
 build_docker:
   runs-on: ubuntu-latest
   container:
-    image: ubuntu:focal
+    image: ubuntu:jammy
   steps:
-    - uses: ros-tooling/setup-ros@v0.2
+    - uses: ros-tooling/setup-ros@v0.4
       with:
         install-connext: true
         use-ros2-testing: true
-        required-ros-distributions: galactic
+        required-ros-distributions: humble
 ```
 
 ### Iterating on all ROS distributions, for all platforms
@@ -183,7 +185,7 @@ The workflow `test` is iterating on all ROS 2 distributions, on macOS, and Windo
 The workflow `test_docker` is iterating on all ROS and ROS 2 distributions, for all supported Ubuntu distributions, using Docker.
 The test matrix associates each distribution with one Docker image.
 This is required to ensure that the appropriate Ubuntu container is used.
-For example, Kinetic requires `xenial`, Dashing requires `bionic`, Galactic requires `focal`, etc.
+For example, Melodic requires `bionic`, Galactic requires `focal`, Humble requires `jammy`, etc.
 
 ```yaml
 jobs:
@@ -193,12 +195,11 @@ jobs:
       matrix:
         os: [macOS-latest, windows-latest]
         ros_distribution: # Only include ROS 2 distributions, as ROS 1 does not support macOS and Windows.
-          - dashing
-          - eloquent
           - foxy
           - galactic
+          - humble
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - uses: ros-tooling/setup-ros@v0.4
         with:
           required-ros-distributions: ${{ matrix.ros_distribution }}
       - name: build and test
@@ -212,13 +213,11 @@ jobs:
     strategy:
       matrix:
         ros_distribution:
-          - kinetic
           - melodic
           - noetic
-          - dashing
-          - eloquent
           - foxy
           - galactic
+          - humble
 
         # Define the Docker image(s) associated with each ROS distribution.
         # The include syntax allows additional variables to be defined, like
@@ -229,33 +228,18 @@ jobs:
         # https://ros.org/reps/rep-0003.html
         # https://ros.org/reps/rep-2000.html
         include:
-          # Kinetic Kame (May 2016 - May 2021)
-          - docker_image: ubuntu:xenial
-            ros_distribution: kinetic
-            # Setting ros_version is helpful to customize the workflow
-            # depending on whether a ROS 1, or ROS 2 is being tested.
-            # See 'if: ros_version ==' below for an example.
-            ros_version: 1
-
           # Melodic Morenia (May 2018 - May 2023)
           - docker_image: ubuntu:bionic
             ros_distribution: melodic
+            # Setting ros_version is helpful to customize the workflow
+            # depending on whether a ROS 1, or ROS 2 is being tested.
+            # See 'if: ros_version ==' below for an example.
             ros_version: 1
 
           # Noetic Ninjemys (May 2020 - May 2025)
           - docker_image: ubuntu:focal
             ros_distribution: noetic
             ros_version: 1
-
-          # Dashing Diademata (May 2019 - May 2021)
-          - docker_image: ubuntu:bionic
-            ros_distribution: dashing
-            ros_version: 2
-
-          # Eloquent Elusor (November 2019 - November 2020)
-          - docker_image: ubuntu:bionic
-            ros_distribution: eloquent
-            ros_version: 2
 
           # Foxy Fitzroy (June 2020 - May 2023)
           - docker_image: ubuntu:focal
@@ -267,11 +251,21 @@ jobs:
             ros_distribution: galactic
             ros_version: 2
 
+          # Humble Hawksbill (May 2022 - May 2027)
+          - docker_image: ubuntu:jammy
+            ros_distribution: humble
+            ros_version: 2
+
+          # Rolling Ridley (No End-Of-Life)
+          - docker_image: ubuntu:jammy
+            ros_distribution: rolling
+            ros_version: 2
+
     container:
       image: ${{ matrix.docker_image }}
     steps:
       - name: setup ROS environment
-        uses: ros-tooling/setup-ros@v0.2
+        uses: ros-tooling/setup-ros@v0.4
         with:
           required-ros-distributions: ${{ matrix.ros_distribution }}
       - name: build and test ROS 1

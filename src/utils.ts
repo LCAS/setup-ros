@@ -42,14 +42,11 @@ export function getRequiredRosDistributions(): string[] {
 
 //list of valid linux distributions
 const validDistro: string[] = [
-	"kinetic",
-	"lunar",
 	"melodic",
 	"noetic",
-	"dashing",
-	"eloquent",
 	"foxy",
 	"galactic",
+	"humble",
 	"rolling",
 ];
 
@@ -64,4 +61,28 @@ export function validateDistro(
 	}
 
 	return true;
+}
+
+/**
+ * Determines the Ubuntu distribution codename.
+ *
+ * This function directly source /etc/lsb-release instead of invoking
+ * lsb-release as the package may not be installed.
+ *
+ * @returns Promise<string> Ubuntu distribution codename (e.g. "focal")
+ */
+export async function determineDistribCodename(): Promise<string> {
+	let distribCodename = "";
+	const options: im.ExecOptions = {};
+	options.listeners = {
+		stdout: (data: Buffer) => {
+			distribCodename += data.toString();
+		},
+	};
+	await exec(
+		"bash",
+		["-c", 'source /etc/lsb-release ; echo -n "$DISTRIB_CODENAME"'],
+		options
+	);
+	return distribCodename;
 }

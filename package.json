@@ -1,6 +1,6 @@
 {
 	"name": "setup-ros",
-	"version": "0.2.0",
+	"version": "0.4.1",
 	"description": "GitHub Action to setup a ROS 2 development environment",
 	"main": "dist/index.js",
 	"scripts": {
@@ -32,7 +32,7 @@
 		"url": "https://github.com/LCAS/setup-ros/issues"
 	},
 	"dependencies": {
-		"@actions/core": "^1.4.0",
+		"@actions/core": "^1.9.1",
 		"@actions/exec": "^1.1.0",
 		"@actions/io": "^1.1.1",
 		"@actions/tool-cache": "^1.7.1"
