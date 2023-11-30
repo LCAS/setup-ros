@@ -2,7 +2,7 @@
 	"name": "setup-ros",
 	"version": "0.7.0",
 	"description": "GitHub Action to setup a ROS 2 development environment",
-	"main": "dist/index.js",
+	"main": "lib/main.js",
 	"scripts": {
 		"prepare": "husky install",
 		"build": "ncc build src/setup-ros.ts -o dist",
