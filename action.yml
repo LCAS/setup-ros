@@ -26,17 +26,15 @@ inputs:
 
       Allowed ROS distributions
       - "" (no value) - no ROS binary installation
-      - melodic
       - noetic
-      - foxy
-      - galactic
       - humble
+      - iron
       - rolling
 
       Multiple values can be passed using a whitespace delimited list
-      "noetic galactic".
+      "noetic humble".
     required: false
     default: ""
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"
