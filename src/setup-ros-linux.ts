@@ -170,11 +170,6 @@ async function rosdepInit(): Promise<void> {
 		"rm /etc/ros/rosdep/sources.list.d/20-default.list || true",
 	]);
 	// Initializes rosdep, trying to remove the default file first in case this environment has already done a rosdep init before
-	await utils.exec("sudo", [
-		"bash",
-		"-c",
-		"rm /etc/ros/rosdep/sources.list.d/20-default.list || true",
-	]);
 	await utils.exec("sudo", ["rosdep", "init"]);
 	await utils.exec("sudo", [
 		"bash",
@@ -188,12 +183,12 @@ async function rosdepInit(): Promise<void> {
 	]);
 	await utils.exec("bash", [
 		"-c",
-		"mkdir -p ~/.config/rosdistro && echo \"index_url: https://raw.github.com/lcas/rosdistro/master/index-v4.yaml\" > ~/.config/rosdistro/config.yaml",
+		"mkdir -p ~/.config/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > ~/.config/rosdistro/config.yaml",
 	]);
 	await utils.exec("sudo", [
 		"bash",
 		"-c",
-		"mkdir -p /root/rosdistro && echo \"index_url: https://raw.github.com/lcas/rosdistro/master/index-v4.yaml\" > /root/rosdistro/config.yaml",
+		"mkdir -p /root/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > /root/rosdistro/config.yaml",
 	]);
 
 }
