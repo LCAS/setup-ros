@@ -7250,6 +7250,16 @@ function rosdepInit() {
           "-c",
           "curl -o /etc/ros/rosdep/sources.list.d/50-lcas.list https://raw.githubusercontent.com/LCAS/rosdistro/master/rosdep/sources.list.d/50-lcas.list",
         ]);      
+        yield utils.exec("bash", [
+          "-c",
+          "mkdir -p ~/.config/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > ~/.config/rosdistro/config.yaml",
+        ]);
+        yield utils.exec("sudo", [
+          "bash",
+          "-c",
+          "mkdir -p /root/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > /root/rosdistro/config.yaml",
+        ]);
+      
     });
 }
 /**
