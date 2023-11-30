@@ -188,7 +188,12 @@ async function rosdepInit(): Promise<void> {
 	]);
 	await utils.exec("bash", [
 		"-c",
-		`mkdir -p ~/.config/rosdistro && echo "index_url: https://raw.github.com/lcas/rosdistro/master/index-v4.yaml" > ~/.config/rosdistro/config.yaml`,
+		"mkdir -p ~/.config/rosdistro && echo \"index_url: https://raw.github.com/lcas/rosdistro/master/index-v4.yaml\" > ~/.config/rosdistro/config.yaml",
+	]);
+	await utils.exec("sudo", [
+		"bash",
+		"-c",
+		"mkdir -p /root/rosdistro && echo \"index_url: https://raw.github.com/lcas/rosdistro/master/index-v4.yaml\" > /root/rosdistro/config.yaml",
 	]);
 
 }
