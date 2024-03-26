@@ -7660,7 +7660,7 @@ function getRequiredRosDistributions() {
 }
 exports.getRequiredRosDistributions = getRequiredRosDistributions;
 //list of valid linux distributions
-const validDistro = ["noetic", "humble", "iron", "rolling"];
+const validDistro = ["melodic", "noetic", "humble", "iron", "rolling"];
 //Determine whether all inputs name supported ROS distributions.
 function validateDistro(requiredRosDistributionsList) {
     for (const rosDistro of requiredRosDistributionsList) {
