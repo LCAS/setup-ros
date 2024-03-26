@@ -6607,6 +6607,25 @@ const aptDependencies = [
     "python3-rosinstall-generator",
 ];
 const distributionSpecificAptDependencies = {
+    bionic: [
+        // Basic development packages
+        "build-essential",
+        "cmake",
+        "git",
+        "python-pip",
+        "python-catkin-pkg-modules",
+        "python-vcstool",
+        "wget",
+        // OpenSplice
+        "libopensplice69",
+        // python3-rosdep is conflicting with ros-melodic-desktop-full,
+        // and should not be used here. See ros-tooling/setup-ros#74
+        "python-rosdep",
+        // python required for sourcing setup.sh
+        "python",
+        "libc++-dev",
+        "libc++abi-dev",
+    ],
     focal: [
         // Basic development packages
         "build-essential",
