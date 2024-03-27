@@ -12,7 +12,7 @@ const binaryReleases: { [index: string]: string } = {
 	iron: "https://github.com/ros2/ros2/releases/download/release-iron-20230523/ros2-iron-20230523-windows-release-amd64.zip",
 };
 
-const pip3Packages: string[] = ["lxml", "netifaces"];
+const pipPackages: string[] = ["lxml", "netifaces"];
 
 /**
  * Install ROS 2 build tools.
@@ -50,9 +50,9 @@ async function prepareRos2BuildEnvironment() {
 		cwd: path.sep,
 	});
 
-	await pip.installPython3Dependencies(false);
-	await pip.runPython3PipInstall(pip3Packages, false);
-	await pip.runPython3PipInstall(["rosdep", "vcstool"], false);
+	await pip.installpythonDependencies(false);
+	await pip.runpythonPipInstall(pipPackages, false);
+	await pip.runpythonPipInstall(["rosdep", "vcstool"], false);
 	return utils.exec(`rosdep`, ["init"]);
 }
 

@@ -2,7 +2,7 @@ import * as im from "@actions/exec/lib/interfaces"; // eslint-disable-line no-un
 import * as path from "path";
 import * as utils from "../utils";
 
-const pip3Packages: string[] = [
+const pipPackages: string[] = [
 	"argcomplete",
 	"colcon-bash==0.4.2",
 	"colcon-cd==0.1.1",
@@ -61,43 +61,43 @@ const pip3Packages: string[] = [
 	"wheel",
 ];
 
-const pip3CommandLine: string[] = ["pip3", "install", "--upgrade"];
+const pipCommandLine: string[] = ["pip", "install", "--upgrade"];
 
 /**
- * Run Python3 pip install on a list of specified packages.
+ * Run python pip install on a list of specified packages.
  *
  * @param   packages        list of pip packages to be installed
  * @param   run_with_sudo   whether to prefix the command with sudo
  * @returns Promise<number> exit code
  */
-export async function runPython3PipInstall(
+export async function runpythonPipInstall(
 	packages: string[],
 	run_with_sudo: boolean = true,
 ): Promise<number> {
-	const args = pip3CommandLine.concat(packages);
+	const args = pipCommandLine.concat(packages);
 	// Set CWD to root to avoid running 'pip install' in directory with setup.cfg file
 	const options: im.ExecOptions = {
 		cwd: path.sep,
 	};
 	if (run_with_sudo) {
-		return utils.exec("sudo", pip3CommandLine.concat(packages), options);
+		return utils.exec("sudo", pipCommandLine.concat(packages), options);
 	} else {
 		return utils.exec(args[0], args.splice(1), options);
 	}
 }
 
 /**
- * Run Python3 pip install on a list of specified packages.
+ * Run python pip install on a list of specified packages.
  *
  * @param   run_with_sudo   whether to prefix the command with sudo
  * @returns Promise<number> exit code
  */
-export async function installPython3Dependencies(
+export async function installpythonDependencies(
 	run_with_sudo: boolean = true,
-	packages: string[] = pip3Packages,
+	packages: string[] = pipPackages,
 ): Promise<number> {
 	if (packages.length === 0) {
 		return 0;
 	}
-	return runPython3PipInstall(packages, run_with_sudo);
+	return runpythonPipInstall(packages, run_with_sudo);
 }

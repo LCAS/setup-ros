@@ -6600,11 +6600,11 @@ const aptCommandLine = [
     "--yes",
 ];
 const aptDependencies = [
-    "libssl-dev", // required for pip3 cryptography module
-    "python3-dev", // required for pip3 cryptography module
+    "libssl-dev", // required for pip cryptography module
+    "python-dev", // required for pip cryptography module
     "clang",
     "lcov",
-    "python3-rosinstall-generator",
+    "python-rosinstall-generator",
 ];
 const distributionSpecificAptDependencies = {
     bionic: [
@@ -6618,7 +6618,7 @@ const distributionSpecificAptDependencies = {
         "wget",
         // OpenSplice
         "libopensplice69",
-        // python3-rosdep is conflicting with ros-melodic-desktop-full,
+        // python-rosdep is conflicting with ros-melodic-desktop-full,
         // and should not be used here. See ros-tooling/setup-ros#74
         "python-rosdep",
         // python required for sourcing setup.sh
@@ -6631,12 +6631,12 @@ const distributionSpecificAptDependencies = {
         "build-essential",
         "cmake",
         "git",
-        "python3-pip",
-        "python3-catkin-pkg-modules",
-        "python3-vcstool",
+        "python-pip",
+        "python-catkin-pkg-modules",
+        "python-vcstool",
         "wget",
-        // python-rosdep does not exist on Focal, so python3-rosdep is used.
-        "python3-rosdep",
+        // python-rosdep does not exist on Focal, so python-rosdep is used.
+        "python-rosdep",
         // python required for sourcing setup.sh
         "python",
         "libc++-dev",
@@ -6645,24 +6645,24 @@ const distributionSpecificAptDependencies = {
     jammy: [
         // Basic development packages (from ROS 2 source/development setup instructions)
         // ros-dev-tools includes many packages that we needed to include manually in Focal & older
-        "python3-flake8-docstrings",
-        "python3-pip",
-        "python3-pytest-cov",
-        "python3-flake8-blind-except",
-        "python3-flake8-builtins",
-        "python3-flake8-class-newline",
-        "python3-flake8-comprehensions",
-        "python3-flake8-deprecated",
-        "python3-flake8-import-order",
-        "python3-flake8-quotes",
-        "python3-pytest-repeat",
-        "python3-pytest-rerunfailures",
+        "python-flake8-docstrings",
+        "python-pip",
+        "python-pytest-cov",
+        "python-flake8-blind-except",
+        "python-flake8-builtins",
+        "python-flake8-class-newline",
+        "python-flake8-comprehensions",
+        "python-flake8-deprecated",
+        "python-flake8-import-order",
+        "python-flake8-quotes",
+        "python-pytest-repeat",
+        "python-pytest-rerunfailures",
         "ros-dev-tools",
         // Additional colcon packages (not included in ros-dev-tools)
-        "python3-colcon-coveragepy-result",
-        "python3-colcon-lcov-result",
-        "python3-colcon-meson",
-        "python3-colcon-mixin",
+        "python-colcon-coveragepy-result",
+        "python-colcon-lcov-result",
+        "python-colcon-meson",
+        "python-colcon-mixin",
         // FastRTPS dependencies
         "libasio-dev",
         "libtinyxml2-dev",
@@ -6769,7 +6769,7 @@ const brewDependencies = [
     "openssl",
     "pcre",
     "poco",
-    "python3",
+    "python",
     "qt",
     "spdlog",
     "tinyxml",
@@ -6971,10 +6971,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.installPython3Dependencies = exports.runPython3PipInstall = void 0;
+exports.installpythonDependencies = exports.runpythonPipInstall = void 0;
 const path = __importStar(__nccwpck_require__(1017));
 const utils = __importStar(__nccwpck_require__(1314));
-const pip3Packages = [
+const pipPackages = [
     "argcomplete",
     "colcon-bash==0.4.2",
     "colcon-cd==0.1.1",
@@ -7032,45 +7032,45 @@ const pip3Packages = [
     "setuptools<60.0",
     "wheel",
 ];
-const pip3CommandLine = ["pip3", "install", "--upgrade"];
+const pipCommandLine = ["pip", "install", "--upgrade"];
 /**
- * Run Python3 pip install on a list of specified packages.
+ * Run python pip install on a list of specified packages.
  *
  * @param   packages        list of pip packages to be installed
  * @param   run_with_sudo   whether to prefix the command with sudo
  * @returns Promise<number> exit code
  */
-function runPython3PipInstall(packages, run_with_sudo = true) {
+function runpythonPipInstall(packages, run_with_sudo = true) {
     return __awaiter(this, void 0, void 0, function* () {
-        const args = pip3CommandLine.concat(packages);
+        const args = pipCommandLine.concat(packages);
         // Set CWD to root to avoid running 'pip install' in directory with setup.cfg file
         const options = {
             cwd: path.sep,
         };
         if (run_with_sudo) {
-            return utils.exec("sudo", pip3CommandLine.concat(packages), options);
+            return utils.exec("sudo", pipCommandLine.concat(packages), options);
         }
         else {
             return utils.exec(args[0], args.splice(1), options);
         }
     });
 }
-exports.runPython3PipInstall = runPython3PipInstall;
+exports.runpythonPipInstall = runpythonPipInstall;
 /**
- * Run Python3 pip install on a list of specified packages.
+ * Run python pip install on a list of specified packages.
  *
  * @param   run_with_sudo   whether to prefix the command with sudo
  * @returns Promise<number> exit code
  */
-function installPython3Dependencies(run_with_sudo = true, packages = pip3Packages) {
+function installpythonDependencies(run_with_sudo = true, packages = pipPackages) {
     return __awaiter(this, void 0, void 0, function* () {
         if (packages.length === 0) {
             return 0;
         }
-        return runPython3PipInstall(packages, run_with_sudo);
+        return runpythonPipInstall(packages, run_with_sudo);
     });
 }
-exports.installPython3Dependencies = installPython3Dependencies;
+exports.installpythonDependencies = installpythonDependencies;
 
 
 /***/ }),
@@ -7300,10 +7300,10 @@ function runLinux() {
         yield apt.installAptDependencies(installConnext);
         // We don't use pip here to install dependencies for ROS 2
         if (ubuntuCodename === ros1UbuntuVersion) {
-            /* pip3 dependencies need to be installed after the APT ones, as pip3
+            /* pip dependencies need to be installed after the APT ones, as pip
             modules such as cryptography requires python-dev to be installed,
             because they rely on Python C headers. */
-            yield pip.installPython3Dependencies();
+            yield pip.installpythonDependencies();
         }
         yield rosdepInit();
         for (const rosDistro of utils.getRequiredRosDistributions()) {
@@ -7379,10 +7379,10 @@ function runOsX() {
             "-c",
             'echo "export PATH=$PATH:/usr/local/opt/qt/bin" >> ~/.bashrc',
         ]);
-        yield pip.installPython3Dependencies();
+        yield pip.installpythonDependencies();
         // While rosdep and vcs are available as a Debian package on Ubuntu, they need
         // to be installed through pip on OS X.
-        yield pip.runPython3PipInstall(["catkin-pkg", "rosdep", "vcstool"]);
+        yield pip.runpythonPipInstall(["catkin-pkg", "rosdep", "vcstool"]);
         // Initializes rosdep
         yield utils.exec("sudo", ["rosdep", "init"]);
     });
@@ -7441,7 +7441,7 @@ const binaryReleases = {
     humble: "https://github.com/ros2/ros2/releases/download/release-humble-20230614/ros2-humble-20230614-windows-release-amd64.zip",
     iron: "https://github.com/ros2/ros2/releases/download/release-iron-20230523/ros2-iron-20230523-windows-release-amd64.zip",
 };
-const pip3Packages = ["lxml", "netifaces"];
+const pipPackages = ["lxml", "netifaces"];
 /**
  * Install ROS 2 build tools.
  */
@@ -7471,9 +7471,9 @@ function prepareRos2BuildEnvironment() {
         yield utils.exec("python", ["-m", "pip", "install", "-U", "pip!=22.0.*"], {
             cwd: path.sep,
         });
-        yield pip.installPython3Dependencies(false);
-        yield pip.runPython3PipInstall(pip3Packages, false);
-        yield pip.runPython3PipInstall(["rosdep", "vcstool"], false);
+        yield pip.installpythonDependencies(false);
+        yield pip.runpythonPipInstall(pipPackages, false);
+        yield pip.runpythonPipInstall(["rosdep", "vcstool"], false);
         return utils.exec(`rosdep`, ["init"]);
     });
 }

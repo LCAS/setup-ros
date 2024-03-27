@@ -11,11 +11,11 @@ const aptCommandLine: string[] = [
 ];
 
 const aptDependencies: string[] = [
-	"libssl-dev", // required for pip3 cryptography module
-	"python3-dev", // required for pip3 cryptography module
+	"libssl-dev", // required for pip cryptography module
+	"python-dev", // required for pip cryptography module
 	"clang",
 	"lcov",
-	"python3-rosinstall-generator",
+	"python-rosinstall-generator",
 ];
 
 const distributionSpecificAptDependencies = {
@@ -28,7 +28,7 @@ const distributionSpecificAptDependencies = {
 		"python-catkin-pkg-modules",
 		"python-vcstool",
 		"wget",
-		// python-rosdep does not exist on Focal, so python3-rosdep is used.
+		// python-rosdep does not exist on Focal, so python-rosdep is used.
 		"python-rosdep",
 		// python required for sourcing setup.sh
 		"python",
@@ -38,24 +38,24 @@ const distributionSpecificAptDependencies = {
 	jammy: [
 		// Basic development packages (from ROS 2 source/development setup instructions)
 		// ros-dev-tools includes many packages that we needed to include manually in Focal & older
-		"python3-flake8-docstrings",
-		"python3-pip",
-		"python3-pytest-cov",
-		"python3-flake8-blind-except",
-		"python3-flake8-builtins",
-		"python3-flake8-class-newline",
-		"python3-flake8-comprehensions",
-		"python3-flake8-deprecated",
-		"python3-flake8-import-order",
-		"python3-flake8-quotes",
-		"python3-pytest-repeat",
-		"python3-pytest-rerunfailures",
+		"python-flake8-docstrings",
+		"python-pip",
+		"python-pytest-cov",
+		"python-flake8-blind-except",
+		"python-flake8-builtins",
+		"python-flake8-class-newline",
+		"python-flake8-comprehensions",
+		"python-flake8-deprecated",
+		"python-flake8-import-order",
+		"python-flake8-quotes",
+		"python-pytest-repeat",
+		"python-pytest-rerunfailures",
 		"ros-dev-tools",
 		// Additional colcon packages (not included in ros-dev-tools)
-		"python3-colcon-coveragepy-result",
-		"python3-colcon-lcov-result",
-		"python3-colcon-meson",
-		"python3-colcon-mixin",
+		"python-colcon-coveragepy-result",
+		"python-colcon-lcov-result",
+		"python-colcon-meson",
+		"python-colcon-mixin",
 		// FastRTPS dependencies
 		"libasio-dev",
 		"libtinyxml2-dev",

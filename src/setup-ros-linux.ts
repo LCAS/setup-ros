@@ -217,10 +217,10 @@ export async function runLinux(): Promise<void> {
 
 	// We don't use pip here to install dependencies for ROS 2
 	if (ubuntuCodename === ros1UbuntuVersion) {
-		/* pip3 dependencies need to be installed after the APT ones, as pip3
+		/* pip dependencies need to be installed after the APT ones, as pip
 		modules such as cryptography requires python-dev to be installed,
 		because they rely on Python C headers. */
-		await pip.installPython3Dependencies();
+		await pip.installpythonDependencies();
 	}
 
 	await rosdepInit();

@@ -6,7 +6,7 @@
 
 readonly ROS_DISTRIBUTION="$1"
 
-# GitHub Action is erroneously setting PYTHONHOME to C:\python37
+# GitHub Action is erroneously setting PYTHONHOME to C:\python7
 unset PYTHONHOME
 source "/opt/ros/${ROS_DISTRIBUTION}/setup.bash"
 ros2 pkg list
