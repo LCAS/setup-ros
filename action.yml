@@ -26,13 +26,13 @@ inputs:
 
       Allowed ROS distributions
       - "" (no value) - no ROS binary installation
-      - noetic
+      - melodic
       - humble
       - iron
       - rolling
 
       Multiple values can be passed using a whitespace delimited list
-      "noetic humble".
+      "melodic humble".
     required: false
     default: ""
 runs:

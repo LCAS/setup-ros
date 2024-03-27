@@ -134,9 +134,9 @@ build_docker:
   steps:
     - uses: ros-tooling/setup-ros@v0.7
       with:
-        required-ros-distributions: noetic humble
+        required-ros-distributions: melodic humble
     - run: "source /opt/ros/humble/setup.bash && ros2 run --help"
-    - run: "source /opt/ros/noetic/setup.bash && rosnode --help"
+    - run: "source /opt/ros/melodic/setup.bash && rosnode --help"
 ```
 
 **Note: on Ubuntu, `required-ros-distributions` installs the desktop variant for that distribution. This option is not required, and should probably be avoided in most workflows. It is retained for historical reasons and those who specifically do not care about whether their application specifies its dependencies properly.**
@@ -185,7 +185,7 @@ The workflow `test` is iterating on all ROS 2 distributions, on macOS, and Windo
 The workflow `test_docker` is iterating on all ROS and ROS 2 distributions, for all supported Ubuntu distributions, using Docker.
 The test matrix associates each distribution with one Docker image.
 This is required to ensure that the appropriate Ubuntu container is used.
-For example, Noetic requires `focal`, Humble requires `jammy`, etc.
+For example, Noetic requires `bionic`, Humble requires `jammy`, etc.
 
 ```yaml
 jobs:
@@ -226,8 +226,8 @@ jobs:
         # https://ros.org/reps/rep-2000.html
         include:
           # Noetic Ninjemys (May 2020 - May 2025)
-          - docker_image: ubuntu:focal
-            ros_distribution: noetic
+          - docker_image: ubuntu:bionic
+            ros_distribution: melodic
             ros_version: 1
 
           # Humble Hawksbill (May 2022 - May 2027)

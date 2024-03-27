@@ -19,17 +19,17 @@ const aptDependencies: string[] = [
 ];
 
 const distributionSpecificAptDependencies = {
-	focal: [
+	bionic: [
 		// Basic development packages
 		"build-essential",
 		"cmake",
 		"git",
-		"python3-pip",
-		"python3-catkin-pkg-modules",
-		"python3-vcstool",
+		"python-pip",
+		"python-catkin-pkg-modules",
+		"python-vcstool",
 		"wget",
 		// python-rosdep does not exist on Focal, so python3-rosdep is used.
-		"python3-rosdep",
+		"python-rosdep",
 		// python required for sourcing setup.sh
 		"python",
 		"libc++-dev",

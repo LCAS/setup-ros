@@ -7218,7 +7218,7 @@ function addAptRepoKey() {
     });
 }
 // Ubuntu distribution for ROS 1
-const ros1UbuntuVersion = "focal";
+const ros1UbuntuVersion = "bionic";
 /**
  * Add OSRF APT repository.
  *
