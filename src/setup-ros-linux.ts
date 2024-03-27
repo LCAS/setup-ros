@@ -110,7 +110,7 @@ async function addAptRepoKey(): Promise<void> {
 }
 
 // Ubuntu distribution for ROS 1
-const ros1UbuntuVersion = "bionic";
+const ros1UbuntuVersion = "focal";
 
 /**
  * Add OSRF APT repository.
