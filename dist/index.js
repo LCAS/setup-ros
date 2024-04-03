@@ -7240,6 +7240,11 @@ function addAptRepo(ubuntuCodename, use_ros2_testing) {
                 "-c",
                 `echo "deb http://packages.ros.org/ros2${use_ros2_testing ? "-testing" : ""}/ubuntu ${ubuntuCodename} main" > /etc/apt/sources.list.d/ros2-latest.list`,
             ]);
+            yield utils.exec("sudo", [
+                "bash",
+                "-c",
+                `echo "deb http://lcas.lincoln.ac.uk/ubuntu/apt/lcas ${ubuntuCodename} lcas" > /etc/apt/sources.list.d/lcas-ros2-latest.list`,
+            ]);
         }
         yield utils.exec("sudo", ["apt-get", "update"]);
     });
