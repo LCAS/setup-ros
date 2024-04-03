@@ -149,7 +149,7 @@ async function addAptRepo(
 		await utils.exec("sudo", [
 			"bash",
 			"-c",
-			`echo "deb http://lcas.lincoln.ac.uk/ubuntu/apt/lcas $(lsb_release -sc) lcas" > /etc/apt/sources.list.d/lcas-ros2-latest.list`,
+			`echo "deb http://lcas.lincoln.ac.uk/apt/lcas $(lsb_release -sc) lcas" > /etc/apt/sources.list.d/lcas-ros2-latest.list`,
 		]);
 }
 
