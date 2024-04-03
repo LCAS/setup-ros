@@ -7215,6 +7215,11 @@ function addAptRepoKey() {
         const keyFilePath = path.join(workspace, "ros.key");
         fs_1.default.writeFileSync(keyFilePath, openRoboticsAptPublicGpgKey);
         yield utils.exec("sudo", ["apt-key", "add", keyFilePath]);
+        yield utils.exec("sudo", [
+          "bash",
+          "-c",
+          `curl -s http://lcas.lincoln.ac.uk/repos/public.key | sudo apt-key add -`,
+        ]);
     });
 }
 // Ubuntu distribution for ROS 1

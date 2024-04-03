@@ -137,7 +137,7 @@ async function addAptRepo(
 				`echo "deb http://lcas.lincoln.ac.uk/ubuntu/main $(lsb_release -sc) main" > /etc/apt/sources.list.d/lcas-ros1-latest.list`,
 			]);
 		}
-	await utils.exec("sudo", ["apt-get", "update"]);
+		await utils.exec("sudo", ["apt-get", "update"]);
 	} else {
 		await utils.exec("sudo", [
 			"bash",
