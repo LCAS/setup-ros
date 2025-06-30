@@ -170,7 +170,7 @@ async function addAptRepo(
 		await utils.exec("sudo", [
 			"bash",
 			"-c",
-			`echo "deb http://packages.ros.org/ros2${
+			`echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2${
 				use_ros2_testing ? "-testing" : ""
 			}/ubuntu ${ubuntuCodename} main" > /etc/apt/sources.list.d/ros2-latest.list`,
 		]);
