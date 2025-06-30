@@ -7222,7 +7222,7 @@ function addAptRepoKey() {
         yield utils.exec("sudo", [
             "bash",
             "-c",
-            "curl -sSL -o /usr/share/keyrings/ros-archive-keyring.gpg https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc; ls -l /usr/share/keyrings/; cat /usr/share/keyrings/*.gpg ",
+            "curl -sSL -o /usr/share/keyrings/ros-archive-keyring.gpg https://raw.githubusercontent.com/ros/rosdistro/master/ros.key; gpg --show-key < /usr/share/keyrings/ros-archive-keyring.gpg",
         ]);
         // await utils.exec("sudo", [
         // 	"curl",
