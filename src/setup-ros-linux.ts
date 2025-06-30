@@ -113,9 +113,17 @@ async function addAptRepoKey(): Promise<void> {
 	const keyFilePath = path.join(workspace, "ros.key");
 	fs.writeFileSync(keyFilePath, openRoboticsAptPublicGpgKey);
 	//await utils.exec("sudo", ["apt-key", "add", keyFilePath]);
+	// await utils.exec("sudo", [
+	// 	"cp",
+	// 	keyFilePath,
+	// 	"/usr/share/keyrings/ros-archive-keyring.gpg",
+	// ]);
+
 	await utils.exec("sudo", [
-		"cp",
-		keyFilePath,
+		"curl",
+		"-sSL",
+		"https://raw.githubusercontent.com/ros/rosdistro/master/ros.key",
+		"-o",
 		"/usr/share/keyrings/ros-archive-keyring.gpg",
 	]);
 
