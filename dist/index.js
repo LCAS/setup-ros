@@ -7252,7 +7252,7 @@ function addAptRepo(ubuntuCodename, use_ros2_testing) {
             yield utils.exec("sudo", [
                 "bash",
                 "-c",
-                `echo "deb http://packages.ros.org/ros/ubuntu ${ubuntuCodename} main" > /etc/apt/sources.list.d/ros-latest.list`,
+                `echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu ${ubuntuCodename} main" > /etc/apt/sources.list.d/ros-latest.list`,
             ]);
             yield utils.exec("sudo", ["apt-get", "update"]);
         }
