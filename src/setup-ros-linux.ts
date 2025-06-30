@@ -128,7 +128,7 @@ async function addAptRepoKey(): Promise<void> {
 	await utils.exec("sudo", [
 		"bash",
 		"-c",
-		"curl -sSL -o /usr/share/keyrings/ros-archive-keyring.gpg https://raw.githubusercontent.com/ros/rosdistro/master/ros.key; ls -l /usr/share/keyrings/",
+		"curl -sSL -o /usr/share/keyrings/ros-archive-keyring.gpg https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc; ls -l /usr/share/keyrings/; cat /usr/share/keyrings/*.gpg ",
 	]);
 
 	// await utils.exec("sudo", [
