@@ -6607,25 +6607,6 @@ const aptDependencies = [
     "python3-rosinstall-generator",
 ];
 const distributionSpecificAptDependencies = {
-    bionic: [
-        // Basic development packages
-        "build-essential",
-        "cmake",
-        "git",
-        "python-pip",
-        "python-catkin-pkg-modules",
-        "python-vcstool",
-        "wget",
-        // OpenSplice
-        "libopensplice69",
-        // python3-rosdep is conflicting with ros-melodic-desktop-full,
-        // and should not be used here. See ros-tooling/setup-ros#74
-        "python-rosdep",
-        // python required for sourcing setup.sh
-        "python",
-        "libc++-dev",
-        "libc++abi-dev",
-    ],
     focal: [
         // Basic development packages
         "build-essential",
@@ -7161,8 +7142,20 @@ quoIFL39BhUEvBynuqlrqistnyOhw8W/IQy/ymNzBMcMz6rcMjMwhkgm/LNXoSD1
 qjiCEUOsnlf4CGlhzNMZOx3low6ixzEqKOcfECpeIj80a2fBDmWkcAAjlHu6VBhA
 TUDG9e2xKLzV2Z/DLYsb3+n9QW7KO0yZKfiuUo6AYboAioQKn5jh3iRvjGh2Ujpo
 22G+oae3PcCc7G+z12j6xIY709FQuA49dA2YpzMda0/OX4LP56STEveDRrO+CnV6
-WE+F5FaIKwb72PL4rLi4
-=i0tj
+WE+F5FaIKwb72PL4rLi4iQJUBBMBCAA+AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4B
+AheAFiEEwc9uMea63ohosXK09C7W+6sXxlQFAmgSGgYFCRS0dnAACgkQ9C7W+6sX
+xlS/UA//aAgP67DunDdak96+fLemWJkl4PHhj6637lzacJ+SlRzeUbnS/2XLhmk1
+BNYoib3IHp3GBqvLsQqkCUZWaJTvkkAvJ+1W2N7JByt7Z/tnTS7aVfDxF53nYCxY
+eSH921y2AtIZCIl1N3R2ic7pyzNkVVqwKIV1EqWLMa8GQTy4V0pgwaLE6Ce9Bmtv
+04upGyiPXRoPM3Rfc0mTUtPGJLf651img6TYGb1UbKs2aAitiI2ptg8EdiRYYcGo
+nG8Ar3aUnYj+fpfhTyvqwx0MTtAPDiMUx2vELReYIvhwU+SRHWpp20nL0WIK2krK
+qIq5SwIboBSLkQ5j7tjehKkqfxanUrlUxu/XYlEhq0Mh5oCfBrarIFBUBULUX86p
+ZQUqW4+MrIxHcNcrCPGm3U/4dSZ1rTAdyeEUi7a2H96CYYofl7dq1xXGMDFh+b5/
+3Yw3t8US4VCwxmEj+C3ciARJauB1oDOilEieszPvIS3PdVpp6HCZRRHaB689AzMF
+FoD40iowsNS9XmO6O8V7xzVVS0EtNhz9qUGIz8yjWeLLdpR8NqHOFOvrPP66voEV
+Gc0Va/nozc05WWt42bc0hs1faRMqHRlAlJIKSUm4NSqc+YDNPYFlZSnB97tBhHC9
+CEXRgHY3Utq/I3CLJ+KcJCUCH5D16Z7aOoazG9DKbewA+da8Drw=
+=9IZg
 -----END PGP PUBLIC KEY BLOCK-----
 `;
 /**
@@ -7214,11 +7207,16 @@ function addAptRepoKey() {
         const workspace = process.env.GITHUB_WORKSPACE;
         const keyFilePath = path.join(workspace, "ros.key");
         fs_1.default.writeFileSync(keyFilePath, openRoboticsAptPublicGpgKey);
-        yield utils.exec("sudo", ["apt-key", "add", keyFilePath]);
+        //await utils.exec("sudo", ["apt-key", "add", keyFilePath]);
         yield utils.exec("sudo", [
-          "bash",
-          "-c",
-          `curl -s http://lcas.lincoln.ac.uk/repos/public.key | sudo apt-key add -`,
+            "cp",
+            keyFilePath,
+            "/usr/share/keyrings/ros-archive-keyring.gpg",
+        ]);
+        yield utils.exec("sudo", [
+            "bash",
+            "-c",
+            `curl -s http://lcas.lincoln.ac.uk/repos/public.key | sudo apt-key add -`,
         ]);
     });
 }
@@ -7238,6 +7236,7 @@ function addAptRepo(ubuntuCodename, use_ros2_testing) {
                 "-c",
                 `echo "deb http://packages.ros.org/ros/ubuntu ${ubuntuCodename} main" > /etc/apt/sources.list.d/ros-latest.list`,
             ]);
+            yield utils.exec("sudo", ["apt-get", "update"]);
         }
         else {
             yield utils.exec("sudo", [
@@ -7248,7 +7247,7 @@ function addAptRepo(ubuntuCodename, use_ros2_testing) {
             yield utils.exec("sudo", [
                 "bash",
                 "-c",
-                `echo "deb http://lcas.lincoln.ac.uk/apt/lcas ${ubuntuCodename} lcas" > /etc/apt/sources.list.d/lcas-ros2-latest.list`,
+                `echo "deb http://lcas.lincoln.ac.uk/apt/lcas $(lsb_release -sc) lcas" > /etc/apt/sources.list.d/lcas-ros2-latest.list`,
             ]);
         }
         yield utils.exec("sudo", ["apt-get", "update"]);
@@ -7268,27 +7267,27 @@ function rosdepInit() {
             "-c",
             "rm /etc/ros/rosdep/sources.list.d/20-default.list || true",
         ]);
+        // Initializes rosdep, trying to remove the default file first in case this environment has already done a rosdep init before
         yield utils.exec("sudo", ["rosdep", "init"]);
         yield utils.exec("sudo", [
-          "bash",
-          "-c",
-          "curl -o /etc/ros/rosdep/sources.list.d/20-default.list https://raw.githubusercontent.com/LCAS/rosdistro/master/rosdep/sources.list.d/20-default.list",
+            "bash",
+            "-c",
+            "curl -o /etc/ros/rosdep/sources.list.d/20-default.list https://raw.githubusercontent.com/LCAS/rosdistro/master/rosdep/sources.list.d/20-default.list",
         ]);
         yield utils.exec("sudo", [
-          "bash",
-          "-c",
-          "curl -o /etc/ros/rosdep/sources.list.d/50-lcas.list https://raw.githubusercontent.com/LCAS/rosdistro/master/rosdep/sources.list.d/50-lcas.list",
-        ]);      
+            "bash",
+            "-c",
+            "curl -o /etc/ros/rosdep/sources.list.d/50-lcas.list https://raw.githubusercontent.com/LCAS/rosdistro/master/rosdep/sources.list.d/50-lcas.list",
+        ]);
         yield utils.exec("bash", [
-          "-c",
-          "mkdir -p ~/.config/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > ~/.config/rosdistro/config.yaml",
+            "-c",
+            'mkdir -p ~/.config/rosdistro && echo "index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml" > ~/.config/rosdistro/config.yaml',
         ]);
         yield utils.exec("sudo", [
-          "bash",
-          "-c",
-          "mkdir -p /root/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > /root/rosdistro/config.yaml",
+            "bash",
+            "-c",
+            'mkdir -p /root/rosdistro && echo "index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml" > /root/rosdistro/config.yaml',
         ]);
-      
     });
 }
 /**
@@ -7670,7 +7669,7 @@ function getRequiredRosDistributions() {
 }
 exports.getRequiredRosDistributions = getRequiredRosDistributions;
 //list of valid linux distributions
-const validDistro = ["melodic", "noetic", "humble", "iron", "rolling"];
+const validDistro = ["noetic", "humble", "iron", "rolling"];
 //Determine whether all inputs name supported ROS distributions.
 function validateDistro(requiredRosDistributionsList) {
     for (const rosDistro of requiredRosDistributionsList) {

@@ -113,14 +113,17 @@ async function addAptRepoKey(): Promise<void> {
 	const keyFilePath = path.join(workspace, "ros.key");
 	fs.writeFileSync(keyFilePath, openRoboticsAptPublicGpgKey);
 	//await utils.exec("sudo", ["apt-key", "add", keyFilePath]);
-	await utils.exec("sudo", ["cp", keyFilePath, "/usr/share/keyrings/ros-archive-keyring.gpg"]);
+	await utils.exec("sudo", [
+		"cp",
+		keyFilePath,
+		"/usr/share/keyrings/ros-archive-keyring.gpg",
+	]);
 
 	await utils.exec("sudo", [
 		"bash",
 		"-c",
 		`curl -s http://lcas.lincoln.ac.uk/repos/public.key | sudo apt-key add -`,
 	]);
-
 }
 
 // Ubuntu distribution for ROS 1
@@ -142,15 +145,6 @@ async function addAptRepo(
 			"-c",
 			`echo "deb http://packages.ros.org/ros/ubuntu ${ubuntuCodename} main" > /etc/apt/sources.list.d/ros-latest.list`,
 		]);
-		// adding L-CAS repos
-		// only add L-CAS for bionic at the moment, as we don't support others yet.
-		if (ubuntuCodename === "bionic") {
-			await utils.exec("sudo", [
-				"bash",
-				"-c",
-				`echo "deb http://lcas.lincoln.ac.uk/ubuntu/main $(lsb_release -sc) main" > /etc/apt/sources.list.d/lcas-ros1-latest.list`,
-			]);
-		}
 		await utils.exec("sudo", ["apt-get", "update"]);
 	} else {
 		await utils.exec("sudo", [
@@ -165,7 +159,7 @@ async function addAptRepo(
 			"-c",
 			`echo "deb http://lcas.lincoln.ac.uk/apt/lcas $(lsb_release -sc) lcas" > /etc/apt/sources.list.d/lcas-ros2-latest.list`,
 		]);
-}
+	}
 
 	await utils.exec("sudo", ["apt-get", "update"]);
 }
@@ -197,14 +191,13 @@ async function rosdepInit(): Promise<void> {
 	]);
 	await utils.exec("bash", [
 		"-c",
-		"mkdir -p ~/.config/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > ~/.config/rosdistro/config.yaml",
+		'mkdir -p ~/.config/rosdistro && echo "index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml" > ~/.config/rosdistro/config.yaml',
 	]);
 	await utils.exec("sudo", [
 		"bash",
 		"-c",
-		"mkdir -p /root/rosdistro && echo \"index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml\" > /root/rosdistro/config.yaml",
+		'mkdir -p /root/rosdistro && echo "index_url: https://raw.github.com/LCAS/rosdistro/master/index-v4.yaml" > /root/rosdistro/config.yaml',
 	]);
-
 }
 
 /**

@@ -93,3 +93,4 @@ typings/
 
 # Visual Studio Code files
 .vscode/
+.DS_Store
